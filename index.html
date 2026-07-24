@@ -319,6 +319,11 @@
   #searchresults { max-width: 760px; margin: 12px auto 0; }
   .sr-group { color: var(--gold); text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.1em; margin: 14px 0 4px; }
   .sr {
+    display: block;
+    width: 100%;
+    color: inherit;
+    font: inherit;
+    text-align: left;
     background: var(--panel);
     border: 1px solid var(--line);
     border-radius: var(--radius);
@@ -327,12 +332,13 @@
     cursor: pointer;
   }
   .sr b { color: var(--gold); font-size: 0.92rem; }
-  .sr .snip { color: var(--muted); font-size: 0.82rem; margin-top: 2px; }
+  .sr .snip { display: block; color: var(--muted); font-size: 0.82rem; margin-top: 2px; }
   .sr mark { background: none; color: var(--ink); font-weight: bold; }
 
   /* ---------- Card library ---------- */
   .cardgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 10px; margin-top: 10px; }
   .cardgrid .card { cursor: pointer; text-align: center; }
+  .cardgrid button.card { appearance: none; background: none; border: 0; color: inherit; font: inherit; padding: 0; width: 100%; }
   .cardgrid .card img { width: 100%; border-radius: 7px; display: block; background: var(--panel); min-height: 118px; }
   .cardgrid .card .nm { font-size: 0.72rem; color: var(--muted); margin-top: 3px; line-height: 1.2; }
   .cardcount { color: var(--muted); font-size: 0.78rem; margin: 4px 0; }
@@ -405,15 +411,15 @@
     <h3>The goal &amp; the board</h3>
     <p>Most Influence in your Supply at game end wins. The board holds the <strong>Great Road</strong> (market of Kingdom Cards), the <strong>Map</strong> (Highlands, Plateau, Lowlands — each with two Locations), the Order Track and Round Track, plus the three <strong>Councils</strong>. You own a Player Board, a 14-card Basic Deck (identical across factions), a Herald, five Supporters, four Tactic tiles and a <strong>Site of Power</strong> with five buyable faction-unique cards.</p>
     <h3>Reading a card</h3>
-    <p>Top left: <strong>Strength</strong> (0–11) for Bids and Clashes, with <strong>Archetype</strong> and <strong>Traits</strong> beneath. Right edge: <strong>Votes</strong> (Councils) and <strong>Lore</strong> (Journeying). Bold text = <strong>Commands</strong>. Circular border = optional Action; hexagonal border = mandatory Effect.</p>
+    <p>Top left: <strong>Strength</strong> (0–11) for Bids and Clashes, with <strong>Archetype</strong> and <strong>Traits</strong> beneath. Right edge: <strong>Votes</strong> (Councils) and <strong>Lore</strong> (Journeying). On Faction Cards, bold names are <strong>Commands</strong>. On Kingdom Cards, bold acquisition text is mandatory when acquired. Circular border = optional Action; hexagonal border = mandatory Effect.</p>
     <h3>A year in one breath</h3>
-    <p><strong>Spring</strong>: secretly bid a card for Kingdom Cards, place your Herald, lay one face-down card at each Region, take Actions (e.g. place Supporters). <strong>Summer</strong>: resolve a Clash in each Region — reveal, trick, tally Strength; winners claim Location rewards. <strong>Autumn</strong>: Govern into Councils, Journey for Lore, buy from your Site of Power. <strong>Winter</strong>: cleanup. Then a new year begins, turn order reset by Influence.</p>
+    <p><strong>Spring</strong>: secretly bid a card for Kingdom Cards, place your Herald, lay one face-down card at each Region, take Actions (e.g. place Supporters). <strong>Summer</strong>: resolve a Clash in each Region — reveal, trick, tally Strength; winners claim Location rewards. <strong>Autumn</strong>: Govern into Councils and Journey for Lore. Whenever you gain Lore, you may immediately spend any Lore in your Supply at your Site of Power. <strong>Winter</strong>: cleanup. Then a new year begins, turn order reset by Influence.</p>
     <h3>Key habits</h3>
     <ul>
       <li><strong>Don't fight everywhere</strong> — pick one priority Region per Round.</li>
       <li><strong>Guard your card economy</strong> — Rally cards home, keep your hand full, fear Attrition.</li>
       <li><strong>Track enemy Agents</strong> — until they're accounted for, shield your best cards from Deadly.</li>
-      <li><strong>Recover your pieces</strong> — Supporters left on the Map are lost in Winter; the Shrine and Council of Oaths bring things back.</li>
+      <li><strong>Recover your pieces</strong> — Supporters left on the Map are lost in Winter. Use Rally or the Shrine to recycle cards; Council of Oaths recovers Supporters.</li>
       <li><strong>Lose with style</strong> — Flank away, Retreat, or trade eliminations; win by small margins.</li>
     </ul>
   </div>
@@ -442,9 +448,9 @@
   <details id="ref-commands"><summary>Commands</summary><div class="body">
     <ul>
       <li><span class="cmd">Ambush</span> <em>(Day, optional)</em> — if this card is Active in the current Clash, add a face-down card from hand to the Clash. Once per Clash per card.</li>
-      <li><span class="cmd">Retreat</span> <em>(Day, optional)</em> — move any of your Active cards in this Region (incl. this one) to hand; also return your Herald and Supporters here to your board.</li>
+      <li><span class="cmd">Retreat</span> <em>(Day, optional)</em> — move any number of your Active cards in this Region (incl. this one) to hand. You may also return your Herald and any number of your Supporters in this Region.</li>
       <li><span class="cmd">Flank</span> <em>(Day, optional)</em> — move this card to a different <em>unresolved</em> Region. None left = no Flank.</li>
-      <li><span class="cmd">Rally (Self / Any X)</span> <em>(listed step, optional)</em> — return this card / up to X Active cards to hand.</li>
+      <li><span class="cmd">Rally (Self / Any X)</span> <em>(listed step, optional)</em> — if this card is Active, return this card / up to X Active cards to hand.</li>
       <li><span class="cmd">Deploy (X)</span> <em>(listed step, optional)</em> — play this card from hand face-up next to a Region with X Influence from the Reserve on it; the Influence keeps it Active through Winter.</li>
       <li><span class="cmd">Deadly</span> <em>(Night, mandatory)</em> — Eliminates all opponents' Active cards in the current Clash (→ Lost Pile). Multiple Deadlies kill each other simultaneously.</li>
     </ul>
@@ -496,7 +502,7 @@
     <ul>
       <li><strong>Council of Relics</strong> — when resolving your Herald Reward, for each of your Votes you discard from here, gain 1 Influence.</li>
       <li><strong>Council of Secrets</strong> — Autumn Action: place Faction Markers on Locations equal to your Votes here. A Location with 4+ of your markers: remove them and claim its Location Reward, ignoring all Influence on it. Markers persist between Rounds.</li>
-      <li><strong>Council of Oaths</strong> — Autumn Action: per Vote here, move one Supporter from Map/Lost Pile to your Player Board; +1 extra with the most Votes here.</li>
+      <li><strong>Council of Oaths</strong> — Autumn Action: per Vote here, move one Supporter from Map/Lost Pile to your Player Board; +1 extra with the most Votes here. You must have at least 1 Vote here to use this Action or qualify for most.</li>
       <li>Cards removed from a Council go to their owner's Discard Pile. The Castle reward clears the chosen Council.</li>
     </ul>
   </div></details>
@@ -570,10 +576,10 @@
     <p class="style">Defence, control, locking down what is theirs. The old order, stirring awake.</p>
     <h3>Tactics</h3>
     <ul>
-      <li><strong>Martial Law</strong> (2 uses) — lock down a Region with an Active War Machine.</li>
-      <li><strong>School of the Stones</strong> — Supporters +1 Strength this Round and stay on the Map in Winter.</li>
-      <li><strong>Witch Trial</strong> — clear opponents from one Council; gain Lore moving your Council members to your deck.</li>
-      <li><strong>Royal Seal</strong> — Bid: set all opponents' bidding Strength to 0.</li>
+      <li><strong>Martial Law</strong> (2 uses) — remove a marker and choose a Region where you have an Active War Machine. During its first Clash this Round, opponents cannot swap, add or move Faction Cards into it.</li>
+      <li><strong>School of the Stones</strong> — each of your Supporters contributes +1 extra Strength for the rest of this Round and stays on the Map in Winter.</li>
+      <li><strong>Witch Trial</strong> — choose a Council and discard all opponents' cards there. Move any of your Council cards to the top of your Deck; gain 1 Lore per card moved.</li>
+      <li><strong>Royal Seal</strong> — after Bids are revealed, set every opponent's total Bidding Strength to 0 for this Round.</li>
     </ul>
     <h3>Kingdom's Favour — Regal Guard</h3>
     <p>Choose one: gain 1 Influence, or your Heir gains Invulnerable for the rest of the Round.</p>
@@ -588,10 +594,10 @@
     <p class="style">Mobility, momentum, overwhelming force. Exiles sailing home.</p>
     <h3>Tactics</h3>
     <ul>
-      <li><strong>School of the Storms</strong> — place the Clash Markers this Round; gain Lore for most Supporters, Influence for most faction cards.</li>
-      <li><strong>Sea Lanes</strong> (3 uses) — Heir/Captain/War Machine gains Flank until end of Round.</li>
-      <li><strong>River Runners</strong> — steal an Occupied Kingdom Card.</li>
-      <li><strong>Salt Toughness</strong> — move Active/discarded cards to hand.</li>
+      <li><strong>School of the Storms</strong> — Spring: place the Clash Markers this Round. For the rest of the Round, before a Region's rewards: most Supporters there grants 1 Influence; most Active cards there grants 1 Lore.</li>
+      <li><strong>Sea Lanes</strong> (3 uses) — Day: remove a marker and choose your Active Heir, Captain or War Machine in the current Region; it gains Day Flank for the rest of the Round.</li>
+      <li><strong>River Runners</strong> — move an opponent's Occupied Kingdom Card to your board and Occupy it with a card from your Hand.</li>
+      <li><strong>Salt Toughness</strong> — move any number of your Active and/or discarded Faction Cards to your Hand, up to Hand Size.</li>
     </ul>
     <h3>Kingdom's Favour — Prophet of the Waves</h3>
     <p>Move your Herald to a Location in the current Region; move up to two Supporters from other Regions here.</p>
@@ -606,28 +612,28 @@
     <p class="style">Card manipulation, subversion, creeping accrual of power. The cult that grows each night.</p>
     <h3>Tactics</h3>
     <ul>
-      <li><strong>Moonlit Foragers</strong> — acquire a discarded Kingdom Card.</li>
+      <li><strong>Moonlit Foragers</strong> — shuffle the Kingdom Discard face-down, look at five random cards, acquire one with a card from your Hand, then return the rest.</li>
       <li><strong>Out Beyond the Lights</strong> — swap two of your Active cards.</li>
-      <li><strong>School of the Stars</strong> — replace two Supporters with a Lost Pile card.</li>
-      <li><strong>Ritual Sacrifice</strong> — gain Lore moving Active/discarded cards to the Lost Pile; recover one discard.</li>
+      <li><strong>School of the Stars</strong> — move two of your Supporters from the current Region to the Lost Pile; then move one of your cards from the Lost Pile to that Region.</li>
+      <li><strong>Ritual Sacrifice</strong> — move up to three of your Active and/or discarded cards to the Lost Pile for 1 Lore each; then you may move one discarded card to your Hand.</li>
     </ul>
     <h3>Kingdom's Favour — Herald of the Moon</h3>
     <p>Move one of your Active cards in your Herald's Region to your hand.</p>
     <h3>Site of Power highlights</h3>
     <ul>
-      <li><strong>Ritual of the Eye</strong> (lowest Strength above 0 wins the Clash — the Champion-killer) · <strong>The Door in the Night</strong> (HQ: grant Ambush, even from your Discard Pile).</li>
+      <li><strong>Ritual of the Eye</strong> — while Active in the current Clash, the lowest total Strength above 0 wins instead of the highest. <strong>The Door in the Night</strong> (HQ) — Day: remove a marker to give one of your Active cards in the current Clash Day Ambush for the rest of the Round; remove a second marker to let it Ambush from your Discard Pile.</li>
     </ul>
-    <p><em>First game kit: Champion, Ritual of the Eye, Moonshine Cove. Starter Tactic: Out Beyond the Lights.</em></p>
+    <p><em>First game kit: Champion, Ritual of the Eye, The Door in the Night. Starter Tactic: Out Beyond the Lights.</em></p>
   </div></details>
 
   <details class="fac uprising"><summary><span class="ic">U</span> The Uprising</summary><div class="body">
     <p class="style">Scheming, feints, eliminating rival cards. Generations of grief bared like teeth.</p>
     <h3>Tactics</h3>
     <ul>
-      <li><strong>False Orders</strong> — swap two face-down faction cards, once per opponent.</li>
+      <li><strong>False Orders</strong> — choose an opponent and swap two of their face-down Faction Cards next to Regions; repeat with any number of other opponents.</li>
       <li><strong>Night Raids</strong> — opponents discard one card per Kingdom Card you Occupy.</li>
-      <li><strong>School of the Streets</strong> — your Heir gains Deadly; your Deadly eliminations grant +1 Influence and +1 Lore.</li>
-      <li><strong>Safehouses</strong> (3 uses) — a faction card gains Retreat.</li>
+      <li><strong>School of the Streets</strong> — your Heir gains Night Deadly this Round. For the rest of the Round, whenever any of your cards Eliminates one or more cards, gain 1 Influence and 1 Lore.</li>
+      <li><strong>Safehouses</strong> (3 uses) — remove a marker and choose one of your Active cards in the current Clash; it gains Day Retreat until the end of that Clash.</li>
     </ul>
     <h3>Kingdom's Favour — Spy Network</h3>
     <p>Look at all face-down cards in a Region; you may swap one of your face-down cards in any Region with an Occupying card or a card from hand.</p>
@@ -635,7 +641,7 @@
     <ul>
       <li><strong>Black Powder Ploy</strong> · <strong>Moonshine Cove</strong> (HQ: extra Kingdom Card space) · <strong>The Syndicate</strong> (HQ: Votes from acquiring Kingdom Cards).</li>
     </ul>
-    <p><em>First game kit: Champion, Black Powder Ploy, The Door in the Night. Starter Tactic: School of the Streets.</em></p>
+    <p><em>First game kit: Champion, Black Powder Ploy, Moonshine Cove. Starter Tactic: School of the Streets.</em></p>
   </div></details>
 </section>
 
@@ -695,7 +701,7 @@
       <li><input type="checkbox"><span>Play a <strong>Short Game (4 Rounds)</strong>.</span></li>
       <li><input type="checkbox"><span>Build the 30-card teaching Kingdom Deck (Teaching Guide p.3); rest back in the box.</span></li>
       <li><input type="checkbox"><span>Stack the 8 scripted cards on top, "Remote Bothies" uppermost: Ruined Citadel, Smugglers' Pass, Old King's Helm, Splendid Guard, Mustering Banner, Unearthed Iron Gear, The Sword That Slept, Remote Bothies.</span></li>
-      <li><input type="checkbox"><span>Sites of Power: 3 cards each — Champion plus: Nobility Gilded Wall + Royal Bank · Clans Raid &amp; Raze + New Havens Harbour · Uprising Black Powder Ploy + The Door in the Night · Gathering Ritual of the Eye + Moonshine Cove.</span></li>
+      <li><input type="checkbox"><span>Sites of Power: 3 cards each — Champion plus: Nobility Gilded Wall + Royal Bank · Clans Raid &amp; Raze + New Havens Harbour · Gathering Ritual of the Eye + The Door in the Night · Uprising Black Powder Ploy + Moonshine Cove.</span></li>
       <li><input type="checkbox"><span>Tactics: all Exhausted, or one starter Tactic each — Nobility School of the Stones · Clans Salt Toughness · Gathering Out Beyond the Lights · Uprising School of the Streets.</span></li>
       <li><input type="checkbox"><span>Teacher first on the Order Track.</span></li>
       <li><input type="checkbox"><span>Round 1: Clash order I Highlands, II Plateau, III Lowlands. Teach stealing Kingdom Cards in Round 2.</span></li>
@@ -717,16 +723,16 @@
 </main>
 
 <!-- Search overlay -->
-<div id="searchoverlay">
+<div id="searchoverlay" role="dialog" aria-modal="true" aria-label="Search rules and cards">
   <div class="bar">
     <input id="searchinput" type="search" placeholder="Search rules, keywords, cards…" autocomplete="off">
-    <button class="closebtn" id="searchclose">&times;</button>
+    <button class="closebtn" id="searchclose" aria-label="Close search">&times;</button>
   </div>
   <div id="searchresults"></div>
 </div>
 
 <!-- Card modal -->
-<div id="cardmodal">
+<div id="cardmodal" role="dialog" aria-modal="true" aria-label="Card details">
   <button class="close" aria-label="Close">&times;</button>
   <div class="inner">
     <img id="cm-img" alt="">
