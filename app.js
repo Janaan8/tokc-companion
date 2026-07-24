@@ -451,6 +451,16 @@ document.addEventListener('keydown', e => {
   }
 });
 
+/* factions: only one panel open at a time */
+document.querySelectorAll('#page-factions details.fac').forEach(d => {
+  d.addEventListener('toggle', () => {
+    if (!d.open) return;
+    document.querySelectorAll('#page-factions details.fac[open]').forEach(other => {
+      if (other !== d) other.open = false;
+    });
+  });
+});
+
 /* one-time icon decoration of static content */
 iconify(document.getElementById('rules-ref'));
 iconify(document.getElementById('play-learn'));
