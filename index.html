@@ -42,7 +42,7 @@
     font-weight: normal;
     line-height: 1;
     display: inline-block;
-    vertical-align: -0.1em;
+    vertical-align: 0.05em; /* glyphs overshoot the baseline ~0.15em; lift to optically center on cap height */
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { -webkit-text-size-adjust: 100%; }
@@ -90,7 +90,11 @@
     color: var(--gold);
     font-size: 1.05rem;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
+  #searchbtn .ic { vertical-align: 0; }
 
   /* ---------- Bottom nav ---------- */
   nav.tabs {
@@ -119,6 +123,7 @@
     font-size: 1.25rem;
     margin-bottom: 2px;
     line-height: 1.1;
+    transform: translateY(-1px);
   }
   nav.tabs button.active { color: var(--gold); }
 
