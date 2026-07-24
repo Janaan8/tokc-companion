@@ -409,6 +409,12 @@
 
 <main>
 
+<div id="installbar" style="display:none; background:var(--panel); border:1px solid var(--gold-dim); border-radius:12px; padding:10px 12px; margin:6px 0 2px; font-size:0.87rem;">
+  <span id="installtext"></span>
+  <button id="installbtn" style="display:none; margin-top:8px; width:100%; background:var(--gold); color:var(--ink-dark); border:none; border-radius:10px; font-family:inherit; font-weight:bold; font-size:0.9rem; padding:9px 0; cursor:pointer;">Install app</button>
+  <button id="installdismiss" style="background:none; border:none; color:var(--muted); font-family:inherit; font-size:0.78rem; margin-top:6px; cursor:pointer; padding:0;">Not now</button>
+</div>
+
 <!-- ============ PLAY (round companion) ============ -->
 <section class="page visible" id="page-play">
   <div class="subnav">
@@ -730,12 +736,50 @@
   <button data-page="setup"><span class="ico">q</span>Setup</button>
 </nav>
 
-<script src="cards-data.js?v=6"></script>
-<script src="app.js?v=6"></script>
+<script src="cards-data.js?v=7"></script>
+<script src="app.js?v=7"></script>
 <script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js');
   }
+
+  /* ---- install helper ---- */
+  (function () {
+    const bar = document.getElementById('installbar');
+    const text = document.getElementById('installtext');
+    const btn = document.getElementById('installbtn');
+    const dismiss = document.getElementById('installdismiss');
+    const standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+    let dismissed = false;
+    try { dismissed = sessionStorage.getItem('tokc-install-dismissed') === '1'; } catch (e) {}
+    if (standalone || dismissed) return;
+
+    let deferred = null;
+    window.addEventListener('beforeinstallprompt', e => {
+      e.preventDefault();
+      deferred = e;
+      text.innerHTML = '<b>Install this app</b> — full screen, own icon, works offline.';
+      btn.style.display = '';
+      bar.style.display = '';
+    });
+    btn.addEventListener('click', async () => {
+      if (!deferred) return;
+      deferred.prompt();
+      await deferred.userChoice;
+      bar.style.display = 'none';
+    });
+
+    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    if (isIOS) {
+      text.innerHTML = '<b>Install this app:</b> tap the Share button <span style="font-size:1.05em">&#x2191;&#xFE0E;</span> below, then choose <b>"Add to Home Screen"</b>.';
+      bar.style.display = '';
+    }
+
+    dismiss.addEventListener('click', () => {
+      bar.style.display = 'none';
+      try { sessionStorage.setItem('tokc-install-dismissed', '1'); } catch (e) {}
+    });
+  })();
 </script>
 </body>
 </html>

@@ -1,9 +1,9 @@
-const VERSION = 'tokc-v6';
+const VERSION = 'tokc-v7';
 const SHELL = [
   './',
   'index.html',
-  'app.js?v=6',
-  'cards-data.js?v=6',
+  'app.js?v=7',
+  'cards-data.js?v=7',
   'assets/okc-icons.otf',
   'assets/icon-192.png',
   'assets/icon-512.png',
