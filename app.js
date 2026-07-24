@@ -104,6 +104,63 @@ const GLOSSARY = [
   ['Votes', 'Gavel icons on cards. In a Council they power that Council’s ability.', 'v'],
 ];
 
+/* ================= Icon decoration =================
+   Game terms that appear on cards as an icon (not as a word)
+   get their official icon appended after the word. */
+const ICON_TERMS = [
+  ["Kingdom’s Favour", 'B'], ["Kingdom's Favour", 'B'],
+  ['War Machines', 'w'], ['War Machine', 'w'],
+  ['Lore Cost', 'L'],
+  ['Invulnerable', 'I'], ['Resilient', 'R'], ['Pathfinder', 'P'],
+  ['Influence', 'i'], ['Lore', 'p'],
+  ['Votes', 'v'], ['Vote', 'v'],
+  ['Heirs', 'h'], ['Heir', 'h'],
+  ['Captains', 'c'], ['Captain', 'c'],
+  ['Champions', 'x'], ['Champion', 'x'],
+  ['Agents', 'a'], ['Agent', 'a'],
+  ['Followers', 'f'], ['Follower', 'f'],
+  ['Cavalry', 'm'],
+  ['Traders', 't'], ['Trader', 't'],
+  ['Ruse!', 'r'], ['Ruse', 'r'],
+  ['Heralds', 'H'], ['Herald', 'H'],
+  ['Supporters', 'u'], ['Supporter', 'u'],
+  ['HQ', 'q'],
+];
+const ICON_RE = new RegExp('(' + ICON_TERMS.map(([t]) =>
+  t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')(?![\\w’\'])', 'g');
+const ICON_MAP = Object.fromEntries(ICON_TERMS);
+
+function iconify(root, skipSel) {
+  if (!root) return;
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  const targets = [];
+  let node;
+  while ((node = walker.nextNode())) {
+    if (node.parentElement.closest('.ic')) continue;
+    if (skipSel && node.parentElement.closest(skipSel)) continue;
+    if (ICON_RE.test(node.nodeValue)) targets.push(node);
+    ICON_RE.lastIndex = 0;
+  }
+  for (const textNode of targets) {
+    const frag = document.createDocumentFragment();
+    let last = 0;
+    const s = textNode.nodeValue;
+    for (const m of s.matchAll(ICON_RE)) {
+      frag.appendChild(document.createTextNode(s.slice(last, m.index + m[0].length) + ' '));
+      const ic = document.createElement('span');
+      ic.className = 'ic';
+      ic.textContent = ICON_MAP[m[1]];
+      frag.appendChild(ic);
+      last = m.index + m[0].length;
+      // skip the space we already added if the original text continues with one
+      if (s[last] === ' ') last++;
+      frag.appendChild(document.createTextNode(' '));
+    }
+    frag.appendChild(document.createTextNode(s.slice(last)));
+    textNode.replaceWith(frag);
+  }
+}
+
 /* ================= Tabs ================= */
 const tabs = document.querySelectorAll('nav.tabs button');
 function showPage(name) {
@@ -146,6 +203,7 @@ function renderStep() {
       <div class="body-txt">${s.body}</div>
       ${s.tip ? `<div class="tip">${s.tip}</div>` : ''}
     </div>`;
+  iconify(document.getElementById('stepbox'));
   document.getElementById('steppos').textContent = `Step ${stepIdx + 1} of ${STEPS.length}`;
   document.getElementById('prevstep').disabled = stepIdx === 0;
   document.getElementById('nextstep').textContent = stepIdx === STEPS.length - 1 ? 'New Round ↺' : 'Next →';
@@ -171,6 +229,7 @@ function renderGlossary(letter) {
   const items = GLOSSARY.filter(([t]) => !letter || t[0].toUpperCase() === letter);
   glist.innerHTML = items.map(([t, d, ic]) =>
     `<li id="gl-${t.replace(/\W+/g, '')}">${ic ? `<span class="ic">${ic}</span> ` : ''}<b>${t}</b><div class="d">${d}</div></li>`).join('');
+  iconify(glist, 'b');
 }
 const letters = [...new Set(GLOSSARY.map(([t]) => t[0].toUpperCase()))];
 document.getElementById('azbar').innerHTML =
@@ -218,6 +277,7 @@ function openCard(id) {
   document.getElementById('cm-img').src = c.img;
   document.getElementById('cm-name').textContent = c.name;
   document.getElementById('cm-text').textContent = c.text;
+  iconify(document.getElementById('cm-text'));
   document.getElementById('cm-flavor').textContent = c.fl;
   modal.classList.add('open');
 }
@@ -315,6 +375,12 @@ resultsEl.addEventListener('click', e => {
     renderStep();
   }
 });
+
+/* one-time icon decoration of static content */
+iconify(document.getElementById('rules-ref'));
+iconify(document.getElementById('play-learn'));
+iconify(document.getElementById('page-factions'), 'summary');
+iconify(document.getElementById('page-setup'));
 
 /* setup checklists */
 document.querySelectorAll('.check li').forEach(li => {
