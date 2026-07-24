@@ -32,7 +32,7 @@ const STEPS = [
     tip: 'Ruse! is built for this: scout the reveal, then reinforce or escape.' },
   { ph: 'summer', phase: 'Summer', title: 'Clash: Night Effects Step', mode: 'Simultaneous · mandatory',
     body: '<p>All Night Effects trigger automatically — no opting out.</p><ul><li><b>Deadly</b> Eliminates all opponents’ Active cards in the Clash (→ Lost Pile). Invulnerable cards ignore it; Resilient cards go to their discard instead.</li><li>Multiple Deadly cards eliminate each other simultaneously.</li></ul>',
-    tip: 'Agents die to enemy Followers in the same Clash — check before you gloat.' },
+    tip: 'Watch out with the basic Agent card: it has Deadly, but the card itself says it is Eliminated when an opponent has a Follower in the same Clash. So a single enemy Follower kills your Agent, while the Follower (Invulnerable) survives.' },
   { ph: 'summer', phase: 'Summer', title: 'Clash: Tally & Rewards', mode: 'Group',
     body: '<p>Total Strength = your Active cards here + 1 per Supporter + bonuses. Highest wins.</p><ul><li><b>Tie?</b> Tied players (in turn order) may each add a face-down card → a fresh Clash between them (old cards don’t count). All pass = nobody wins this Region.</li><li><b>Winner:</b> pick ONE Location — Herald bonus first (1 Influence + steal 1 per rival Herald there), then the printed Location Reward.</li></ul>',
     tip: 'Win by the smallest margin that works — overkill is wasted strength.' },
