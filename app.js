@@ -239,11 +239,10 @@ document.getElementById('nextstep').addEventListener('click', () => {
 document.getElementById('prevstep').addEventListener('click', () => {
   if (stepIdx > 0) { stepIdx--; renderStep(); }
 });
-let pressTimer = null;
-document.getElementById('prevstep').addEventListener('touchstart', () => {
-  pressTimer = setTimeout(() => { stepIdx = 0; renderStep(); }, 700);
+document.getElementById('resetstep').addEventListener('click', () => {
+  stepIdx = 0;
+  renderStep();
 });
-document.getElementById('prevstep').addEventListener('touchend', () => clearTimeout(pressTimer));
 renderStep();
 
 /* ================= Glossary ================= */
