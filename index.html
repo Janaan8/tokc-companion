@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#1a2a30">
+<title>The Old King's Crown — Companion</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='80' font-size='80'%3E%F0%9F%91%91%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #1a2a30;            /* deep teal-blue, like the game's night palette */
+    --bg2: #14211f;
+    --panel: #23383d;
+    --panel2: #2b4147;
+    --parch: #ede3c8;         /* parchment */
+    --parch2: #e3d6b4;
+    --ink: #eae2cd;
+    --ink-dark: #2c2417;
+    --muted: #9fb0a8;
+    --muted-dark: #6f6350;
+    --gold: #d9b968;
+    --gold-dim: #a8894a;
+    --line: #3a545b;
+    --nobility: #5d8fc9;
+    --clans: #3fa08f;
+    --gathering: #9271bd;
+    --uprising: #c65b50;
+    --spring: #8fb35d;
+    --summer: #d99a4e;
+    --autumn: #c07a4a;
+    --winter: #8fb3c9;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background: radial-gradient(ellipse at 50% -10%, #24444d 0%, var(--bg) 45%, var(--bg2) 100%) fixed;
+    color: var(--ink);
+    font-family: 'Source Serif Pro', Georgia, 'Times New Roman', serif;
+    line-height: 1.55;
+    padding-bottom: 76px;
+    min-height: 100vh;
+  }
+
+  /* ---------- Header ---------- */
+  header.top {
+    padding: 14px 54px 10px;
+    text-align: center;
+    position: relative;
+  }
+  header.top .crown { font-size: 1.5rem; display: block; line-height: 1; filter: drop-shadow(0 0 6px rgba(217,185,104,.45)); }
+  header.top h1 {
+    font-size: 1.05rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: normal;
+    margin-top: 2px;
+  }
+  header.top .rule {
+    width: 130px; height: 1px; margin: 7px auto 0;
+    background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+  }
+  #searchbtn {
+    position: absolute;
+    right: 12px; top: 16px;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--gold-dim);
+    background: var(--panel);
+    color: var(--gold);
+    font-size: 1.05rem;
+    cursor: pointer;
+  }
+
+  /* ---------- Bottom nav ---------- */
+  nav.tabs {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    display: flex;
+    background: linear-gradient(180deg, #1d3238, #16262b);
+    border-top: 1px solid var(--gold-dim);
+    z-index: 50;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  nav.tabs button {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    padding: 8px 2px 9px;
+    cursor: pointer;
+  }
+  nav.tabs button .ico { display: block; font-size: 1.2rem; margin-bottom: 1px; }
+  nav.tabs button.active { color: var(--gold); }
+
+  main { max-width: 760px; margin: 0 auto; padding: 8px 14px 30px; }
+  section.page { display: none; }
+  section.page.visible { display: block; }
+
+  h2 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    margin: 16px 0 8px;
+    font-weight: normal;
+  }
+  h3 { font-size: 0.97rem; margin: 13px 0 5px; }
+  p, li { font-size: 0.92rem; }
+  ul, ol { padding-left: 20px; margin: 6px 0; }
+  li { margin: 3px 0; }
+  em { color: var(--muted); }
+  .cmd { color: var(--gold); font-weight: bold; }
+  .note {
+    background: var(--panel);
+    border-left: 3px solid var(--gold);
+    padding: 8px 11px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin: 10px 0;
+    font-size: 0.86rem;
+    color: var(--muted);
+  }
+
+  /* ---------- Accordions ---------- */
+  details {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    margin: 8px 0;
+    overflow: hidden;
+  }
+  details summary {
+    padding: 11px 34px 11px 13px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.93rem;
+    list-style: none;
+    position: relative;
+  }
+  details summary::-webkit-details-marker { display: none; }
+  details summary::after { content: "+"; position: absolute; right: 13px; color: var(--gold); }
+  details[open] summary::after { content: "–"; }
+  details .body { padding: 0 13px 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.84rem; margin: 8px 0; }
+  th, td { text-align: left; padding: 5px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--gold); font-weight: normal; text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.06em; }
+  .tablewrap { overflow-x: auto; }
+
+  .s-spring summary { border-left: 4px solid var(--spring); }
+  .s-summer summary { border-left: 4px solid var(--summer); }
+  .s-autumn summary { border-left: 4px solid var(--autumn); }
+  .s-winter summary { border-left: 4px solid var(--winter); }
+  .s-year   summary { border-left: 4px solid var(--gold); }
+
+  .fac { border-radius: var(--radius); margin: 10px 0; overflow: hidden; }
+  .fac summary { font-size: 1rem; padding: 12px; }
+  .fac.nobility summary { border-left: 5px solid var(--nobility); }
+  .fac.clans summary { border-left: 5px solid var(--clans); }
+  .fac.gathering summary { border-left: 5px solid var(--gathering); }
+  .fac.uprising summary { border-left: 5px solid var(--uprising); }
+  .fac .style { color: var(--muted); font-style: italic; font-size: 0.85rem; margin-bottom: 6px; }
+
+  /* ---------- Subnav chips ---------- */
+  .subnav { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+  .subnav button {
+    background: var(--panel2);
+    color: var(--ink);
+    border: 1px solid var(--gold-dim);
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-family: inherit;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+  .subnav button.active { background: var(--gold); color: var(--ink-dark); border-color: var(--gold); }
+
+  /* ---------- Play: round stepper ---------- */
+  .phasebar { display: flex; gap: 4px; margin: 10px 0 4px; }
+  .phasebar span {
+    flex: 1; height: 6px; border-radius: 3px;
+    background: var(--panel2);
+  }
+  .phasebar span.on-year { background: var(--gold); }
+  .phasebar span.on-spring { background: var(--spring); }
+  .phasebar span.on-summer { background: var(--summer); }
+  .phasebar span.on-autumn { background: var(--autumn); }
+  .phasebar span.on-winter { background: var(--winter); }
+  .stepcard {
+    background: linear-gradient(180deg, var(--parch), var(--parch2));
+    color: var(--ink-dark);
+    border-radius: var(--radius);
+    padding: 15px 15px 13px;
+    margin: 10px 0;
+    border: 1px solid #b8a67c;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.35);
+  }
+  .stepcard .phase {
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.7rem;
+    color: var(--muted-dark);
+  }
+  .stepcard h3 { margin: 2px 0 3px; font-size: 1.12rem; }
+  .stepcard .mode {
+    display: inline-block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border: 1px solid var(--muted-dark);
+    border-radius: 999px;
+    padding: 1px 9px;
+    color: var(--muted-dark);
+    margin-bottom: 8px;
+  }
+  .stepcard .body-txt { font-size: 0.92rem; }
+  .stepcard .body-txt ul { margin: 5px 0; }
+  .stepcard .tip {
+    margin-top: 9px;
+    font-size: 0.83rem;
+    font-style: italic;
+    color: #5c4f39;
+    border-top: 1px dashed #b8a67c;
+    padding-top: 7px;
+  }
+  .stepnav { display: flex; gap: 8px; margin: 10px 0; }
+  .stepnav button {
+    flex: 1;
+    background: var(--panel);
+    border: 1px solid var(--gold-dim);
+    border-radius: var(--radius);
+    color: var(--gold);
+    font-family: inherit;
+    font-size: 0.9rem;
+    padding: 11px 0;
+    cursor: pointer;
+  }
+  .stepnav button:disabled { opacity: 0.35; }
+  .stepnav button.primary { background: var(--gold); color: var(--ink-dark); font-weight: bold; }
+  .steppos { text-align: center; color: var(--muted); font-size: 0.78rem; }
+  .playmode-note { text-align: center; color: var(--muted); font-size: 0.8rem; margin-top: 4px; }
+
+  /* ---------- Glossary ---------- */
+  .glist { list-style: none; padding: 0; }
+  .glist li {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 9px 12px;
+    margin: 6px 0;
+  }
+  .glist b { color: var(--gold); }
+  .glist .d { font-size: 0.88rem; }
+  .azbar { display: flex; flex-wrap: wrap; gap: 4px; margin: 8px 0; }
+  .azbar button {
+    background: none; border: none; color: var(--muted);
+    font-family: inherit; font-size: 0.85rem; padding: 2px 6px; cursor: pointer;
+  }
+  .azbar button.has { color: var(--gold); }
+
+  /* ---------- Search overlay ---------- */
+  #searchoverlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(12, 20, 23, 0.97);
+    z-index: 120;
+    overflow-y: auto;
+    padding: 14px 14px 40px;
+  }
+  #searchoverlay.open { display: block; }
+  #searchoverlay .bar { display: flex; gap: 8px; max-width: 760px; margin: 0 auto; }
+  #searchoverlay input {
+    flex: 1;
+    background: var(--panel);
+    border: 1px solid var(--gold-dim);
+    border-radius: var(--radius);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 11px 14px;
+  }
+  #searchoverlay .closebtn {
+    background: var(--panel);
+    border: 1px solid var(--gold-dim);
+    border-radius: var(--radius);
+    color: var(--gold);
+    font-size: 1.1rem;
+    width: 46px;
+    cursor: pointer;
+  }
+  #searchresults { max-width: 760px; margin: 12px auto 0; }
+  .sr-group { color: var(--gold); text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.1em; margin: 14px 0 4px; }
+  .sr {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 9px 12px;
+    margin: 5px 0;
+    cursor: pointer;
+  }
+  .sr b { color: var(--gold); font-size: 0.92rem; }
+  .sr .snip { color: var(--muted); font-size: 0.82rem; margin-top: 2px; }
+  .sr mark { background: none; color: var(--ink); font-weight: bold; }
+
+  /* ---------- Card library ---------- */
+  .cardgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 10px; margin-top: 10px; }
+  .cardgrid .card { cursor: pointer; text-align: center; }
+  .cardgrid .card img { width: 100%; border-radius: 7px; display: block; background: var(--panel); min-height: 118px; }
+  .cardgrid .card .nm { font-size: 0.72rem; color: var(--muted); margin-top: 3px; line-height: 1.2; }
+  .cardcount { color: var(--muted); font-size: 0.78rem; margin: 4px 0; }
+  #cardmodal {
+    display: none; position: fixed; inset: 0;
+    background: rgba(12, 20, 23, 0.95);
+    z-index: 130; overflow-y: auto; padding: 18px 14px 90px;
+  }
+  #cardmodal.open { display: block; }
+  #cardmodal .inner { max-width: 460px; margin: 0 auto; }
+  #cardmodal img { width: 100%; border-radius: 12px; }
+  #cardmodal h3 { color: var(--gold); margin: 10px 0 4px; }
+  #cardmodal .txt { white-space: pre-line; font-size: 0.92rem; }
+  #cardmodal .flv { color: var(--muted); font-style: italic; margin-top: 8px; font-size: 0.86rem; }
+  #cardmodal .close {
+    position: fixed; top: 12px; right: 14px;
+    background: var(--panel); border: 1px solid var(--gold-dim);
+    color: var(--gold); font-size: 1.2rem; border-radius: 50%;
+    width: 38px; height: 38px; cursor: pointer;
+  }
+
+  /* ---------- Setup checklist ---------- */
+  .check { list-style: none; padding-left: 0; }
+  .check li {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 9px 10px;
+    margin: 6px 0;
+    display: flex; gap: 9px; align-items: flex-start;
+    cursor: pointer;
+  }
+  .check li input { margin-top: 4px; accent-color: var(--gold); }
+  .check li.done { opacity: 0.5; text-decoration: line-through; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <span class="crown">&#128081;</span>
+  <h1>The Old King's Crown</h1>
+  <div class="rule"></div>
+  <button id="searchbtn" aria-label="Search">&#128269;</button>
+</header>
+
+<main>
+
+<!-- ============ PLAY (round companion) ============ -->
+<section class="page visible" id="page-play">
+  <div class="subnav">
+    <button class="active" data-play="round">Round guide</button>
+    <button data-play="learn">Learn the game</button>
+  </div>
+
+  <div id="play-round">
+    <div class="phasebar" id="phasebar"></div>
+    <div id="stepbox"></div>
+    <div class="stepnav">
+      <button id="prevstep">&#8592; Back</button>
+      <button id="nextstep" class="primary">Next &#8594;</button>
+    </div>
+    <div class="steppos" id="steppos"></div>
+    <div class="playmode-note">Your place is saved on this device. Long-press Back to restart the Round.</div>
+  </div>
+
+  <div id="play-learn" style="display:none">
+    <h2>Learn the Game</h2>
+    <p>The old king is gone. As the head of one of four factions, accrue the most <strong>Influence</strong> over 4–6 Rounds (years) to claim the crown. Each Round flows through five phases; the Round guide walks you through them live at the table.</p>
+    <div class="note">First game? Use the <strong>Setup</strong> tab's "First-game teaching setup", play a Short Game (4 Rounds), and treat Round 1 as learning, not winning.</div>
+    <h3>The goal &amp; the board</h3>
+    <p>Most Influence in your Supply at game end wins. The board holds the <strong>Great Road</strong> (market of Kingdom Cards), the <strong>Map</strong> (Highlands, Plateau, Lowlands — each with two Locations), the Order Track and Round Track, plus the three <strong>Councils</strong>. You own a Player Board, a 14-card Basic Deck (identical across factions), a Herald, five Supporters, four Tactic tiles and a <strong>Site of Power</strong> with five buyable faction-unique cards.</p>
+    <h3>Reading a card</h3>
+    <p>Top left: <strong>Strength</strong> (0–11) for Bids and Clashes, with <strong>Archetype</strong> and <strong>Traits</strong> beneath. Right edge: <strong>Votes</strong> (Councils) and <strong>Lore</strong> (Journeying). Bold text = <strong>Commands</strong>. Circular border = optional Action; hexagonal border = mandatory Effect.</p>
+    <h3>A year in one breath</h3>
+    <p><strong>Spring</strong>: secretly bid a card for Kingdom Cards, place your Herald, lay one face-down card at each Region, take Actions (e.g. place Supporters). <strong>Summer</strong>: resolve a Clash in each Region — reveal, trick, tally Strength; winners claim Location rewards. <strong>Autumn</strong>: Govern into Councils, Journey for Lore, buy from your Site of Power. <strong>Winter</strong>: cleanup. Then a new year begins, turn order reset by Influence.</p>
+    <h3>Key habits</h3>
+    <ul>
+      <li><strong>Don't fight everywhere</strong> — pick one priority Region per Round.</li>
+      <li><strong>Guard your card economy</strong> — Rally cards home, keep your hand full, fear Attrition.</li>
+      <li><strong>Track enemy Agents</strong> — until they're accounted for, shield your best cards from Deadly.</li>
+      <li><strong>Recover your pieces</strong> — Supporters left on the Map are lost in Winter; the Shrine and Council of Oaths bring things back.</li>
+      <li><strong>Lose with style</strong> — Flank away, Retreat, or trade eliminations; win by small margins.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ RULES (glossary + reference) ============ -->
+<section class="page" id="page-rules">
+  <div class="subnav">
+    <button class="active" data-rules="ref">Reference</button>
+    <button data-rules="gloss">Keywords A–Z</button>
+  </div>
+
+  <div id="rules-ref">
+  <h2>Table Reference</h2>
+
+  <details class="s-year" id="ref-sequence"><summary>Round sequence at a glance</summary><div class="body">
+    <ol>
+      <li><strong>Start of the Year</strong> <em>(skip in Round 1)</em> — draw to Hand Size → reorder Order Track by Influence (ties reverse previous order).</li>
+      <li><strong>Spring</strong> — Place Bids → Resolve Bids (highest first: take / steal / return) → repopulate Great Road → Place Heralds → 1 face-down card next to each Region → Spring Action Step.</li>
+      <li><strong>Summer</strong> — last player places Clash Markers → per Region: Reveal → Day Actions → Night Effects → Tally → claim rewards.</li>
+      <li><strong>Autumn</strong> — turn order, free sequence: Govern ×1, Journey ×1, Actions/Commands.</li>
+      <li><strong>Winter</strong> — Winter Effects → cleanup → advance Round Track.</li>
+    </ol>
+  </div></details>
+
+  <details id="ref-commands"><summary>Commands</summary><div class="body">
+    <ul>
+      <li><span class="cmd">Ambush</span> <em>(Day, optional)</em> — if this card is Active in the current Clash, add a face-down card from hand to the Clash. Once per Clash per card.</li>
+      <li><span class="cmd">Retreat</span> <em>(Day, optional)</em> — move any of your Active cards in this Region (incl. this one) to hand; also return your Herald and Supporters here to your board.</li>
+      <li><span class="cmd">Flank</span> <em>(Day, optional)</em> — move this card to a different <em>unresolved</em> Region. None left = no Flank.</li>
+      <li><span class="cmd">Rally (Self / Any X)</span> <em>(listed step, optional)</em> — return this card / up to X Active cards to hand.</li>
+      <li><span class="cmd">Deploy (X)</span> <em>(listed step, optional)</em> — play this card from hand face-up next to a Region with X Influence from the Reserve on it; the Influence keeps it Active through Winter.</li>
+      <li><span class="cmd">Deadly</span> <em>(Night, mandatory)</em> — Eliminates all opponents' Active cards in the current Clash (→ Lost Pile). Multiple Deadlies kill each other simultaneously.</li>
+    </ul>
+  </div></details>
+
+  <details id="ref-traits"><summary>Traits</summary><div class="body">
+    <ul>
+      <li><strong>Invulnerable</strong> — immune to Elimination (Deadly or any other source).</li>
+      <li><strong>Resilient</strong> — when Eliminated, goes to your Discard Pile instead of the Lost Pile.</li>
+      <li><strong>Pathfinder</strong> — when used to Journey, goes to your Discard Pile instead of the Lost Pile.</li>
+    </ul>
+  </div></details>
+
+  <details id="ref-basicdeck"><summary>Basic Deck (14 cards, identical per faction)</summary><div class="body">
+    <div class="tablewrap"><table>
+      <tr><th>Card</th><th>Str</th><th>Notes</th></tr>
+      <tr><td>Heir</td><td>10</td><td>Resilient. Rally (Self). Starts in hand — bounce it home every Round.</td></tr>
+      <tr><td>Captains</td><td>9–6</td><td>1 Vote, 1 Lore, Pathfinder. Great bids &amp; all-rounders; no defence vs Elimination.</td></tr>
+      <tr><td>War Machine</td><td>5</td><td>Invulnerable. Deploy (1) in Autumn — holds a Region into next Round.</td></tr>
+      <tr><td>Cavalry</td><td>5</td><td>Pathfinder. Flank — most mobile card; reveal in early Regions for options.</td></tr>
+      <tr><td>Agent</td><td>5</td><td>2 Votes. Deadly — but Eliminated by enemy Followers in the Clash.</td></tr>
+      <tr><td>Followers</td><td>4–1</td><td>Invulnerable, 1 Lore. Counter Agents; sometimes win as last card standing.</td></tr>
+      <tr><td>Ruse!</td><td>0</td><td>Invulnerable. Ambush <em>or</em> Retreat — scout a Clash, then reinforce or escape.</td></tr>
+      <tr><td>Trader</td><td>0</td><td>2 Votes, 2 Lore. Rally (Any 2) — card economy engine; fragile.</td></tr>
+    </table></div>
+  </div></details>
+
+  <details id="ref-locations"><summary>Map: Regions &amp; Location Rewards</summary><div class="body">
+    <p><strong>Highlands</strong></p>
+    <ul>
+      <li><em>Castle</em> — Gain 1 Influence &amp; Govern with one card that is Active or in your hand. If you do, discard all other cards at the chosen Council.</li>
+      <li><em>Wilderness</em> — Gain 1 Influence &amp; Journey with one card that is Active or in your hand.</li>
+    </ul>
+    <p><strong>Plateau</strong></p>
+    <ul>
+      <li><em>Harvest Field</em> — Gain 1 Influence &amp; take the Kingdom's Favour (or reset yours to III).</li>
+      <li><em>Battlefield</em> — Gain 2 Influence.</li>
+    </ul>
+    <p><strong>Lowlands</strong></p>
+    <ul>
+      <li><em>Shrine</em> — Gain 1 Influence &amp; move up to three cards that are Active and/or in your hand to the bottom of your Deck, in any order.</li>
+      <li><em>Necropolis</em> — Gain 1 Influence &amp; shuffle your Discard Pile and draw up to three cards; you may discard any number of cards from your hand.</li>
+    </ul>
+    <div class="note">Winner picks ONE Location in the Region. Herald bonus first (1 Influence + steal 1 from each rival Herald there), then the printed reward. Printed Influence is mandatory; extra text optional. Neglecting the Lowlands starves your card economy.</div>
+  </div></details>
+
+  <details id="ref-councils"><summary>Councils</summary><div class="body">
+    <ul>
+      <li><strong>Council of Relics</strong> — when resolving your Herald Reward, for each of your Votes you discard from here, gain 1 Influence.</li>
+      <li><strong>Council of Secrets</strong> — Autumn Action: place Faction Markers on Locations equal to your Votes here. A Location with 4+ of your markers: remove them and claim its Location Reward, ignoring all Influence on it. Markers persist between Rounds.</li>
+      <li><strong>Council of Oaths</strong> — Autumn Action: per Vote here, move one Supporter from Map/Lost Pile to your Player Board; +1 extra with the most Votes here.</li>
+      <li>Cards removed from a Council go to their owner's Discard Pile. The Castle reward clears the chosen Council.</li>
+    </ul>
+  </div></details>
+
+  <details id="ref-bidding"><summary>Bidding &amp; Kingdom Cards</summary><div class="body">
+    <ul>
+      <li>Only the Bid card's <strong>Strength</strong> counts (plus Bid-specific bonuses). Ties resolve in Order Track order.</li>
+      <li>Options: take from Great Road / steal (Bid must <em>exceed</em> the Occupying card's Strength) / return card to hand.</li>
+      <li>Stolen from? Your Occupying card returns to your hand.</li>
+      <li>Max two Occupied Kingdom Cards; replacing one discards it and returns its occupier to hand.</li>
+      <li>Repopulate: discard the rightmost leftover (two if nobody bought), slide right, refill, flip the deck's top card.</li>
+      <li>Bold text on an acquired Kingdom Card is mandatory on acquisition.</li>
+    </ul>
+  </div></details>
+
+  <details id="ref-attrition"><summary>Hand, Deck &amp; Attrition</summary><div class="body">
+    <ul>
+      <li><strong>Attrition</strong>: drawing from an empty deck → shuffle Discard Pile into a new deck, Hand Size −1 (min 3), draw to new Hand Size. Lost Pile cards do NOT return.</li>
+      <li>Hand Size: max 8, min 3. Over limit → discard down. Cards gained over limit go on top of your deck.</li>
+      <li>A fuller hand at Round end = fewer draws = less Attrition risk.</li>
+    </ul>
+  </div></details>
+
+  <details id="ref-favour"><summary>Kingdom's Favour</summary><div class="body">
+    <p>Sits on the Harvest Field. Claiming the Harvest Field reward takes it (or resets yours to III). Grants a faction-specific Action; each use rotates it down. The final use returns it to the Harvest Field. First end-game tiebreaker.</p>
+  </div></details>
+
+  <details id="ref-zones"><summary>Card zones &amp; information</summary><div class="body">
+    <ul>
+      <li><strong>Active</strong> = face-up next to a Region. Nothing else is Active.</li>
+      <li><strong>Discard Pile</strong> (public) reshuffles on Attrition; <strong>Lost Pile</strong> (public, shared) does not. <strong>Burned</strong> cards leave the game.</li>
+      <li>Private: your hand and your face-down cards. Hidden to all: decks. Everything face-up is public.</li>
+      <li>Card text beats rulebook. "Printed" ≠ "gained"; blanked information is ignored.</li>
+    </ul>
+  </div></details>
+
+  <details id="ref-endgame"><summary>Game end &amp; tiebreakers</summary><div class="body">
+    <ol>
+      <li>If your Site of Power is empty: 1 Influence per 2 Lore in Supply.</li>
+      <li>Most Influence in Supply wins.</li>
+      <li>Tie → Kingdom's Favour holder; else highest on the Order Track.</li>
+    </ol>
+  </div></details>
+
+  <details id="ref-mistakes"><summary>Common mistakes</summary><div class="body">
+    <ul>
+      <li>Forgetting to discard the rightmost Great Road card before refilling (two if nobody bought).</li>
+      <li>Deployed cards need Influence on them to survive Winter cleanup.</li>
+      <li>Supporters left on the Map in Winter go to the Lost Pile, not home.</li>
+      <li>A tie-triggered Clash is a fresh Clash — earlier cards, Supporters and abilities don't carry over.</li>
+      <li>Night Effects (incl. Deadly) are mandatory and simultaneous.</li>
+      <li>Lore can only be spent at the moment you gain Lore.</li>
+      <li>Autumn's free Govern/Journey must use cards <em>from hand</em>.</li>
+    </ul>
+  </div></details>
+  </div>
+
+  <div id="rules-gloss" style="display:none">
+    <h2>Keywords A–Z</h2>
+    <div class="azbar" id="azbar"></div>
+    <ul class="glist" id="glist"></ul>
+  </div>
+</section>
+
+<!-- ============ FACTIONS ============ -->
+<section class="page" id="page-factions">
+  <h2>Factions</h2>
+  <p>All factions share the same 14-card Basic Deck. Their identity comes from four unique <strong>Tactics</strong>, five buyable <strong>Site of Power</strong> cards and a faction <strong>Kingdom's Favour</strong> Action. Full card texts &amp; images: Cards tab.</p>
+
+  <details class="fac nobility"><summary>The Nobility</summary><div class="body">
+    <p class="style">Defence, control, locking down what is theirs. The old order, stirring awake.</p>
+    <h3>Tactics</h3>
+    <ul>
+      <li><strong>Martial Law</strong> (2 uses) — lock down a Region with an Active War Machine.</li>
+      <li><strong>School of the Stones</strong> — Supporters +1 Strength this Round and stay on the Map in Winter.</li>
+      <li><strong>Witch Trial</strong> — clear opponents from one Council; gain Lore moving your Council members to your deck.</li>
+      <li><strong>Royal Seal</strong> — Bid: set all opponents' bidding Strength to 0.</li>
+    </ul>
+    <h3>Kingdom's Favour — Regal Guard</h3>
+    <p>Choose one: gain 1 Influence, or your Heir gains Invulnerable for the rest of the Round.</p>
+    <h3>Site of Power highlights</h3>
+    <ul>
+      <li><strong>The Viceroy</strong> (Champion, Str 11) · <strong>The Queen, Long Ago</strong> (Heir) · <strong>The High Court</strong> · <strong>Gilded Wall</strong> (War Machine) · <strong>Royal Bank</strong> (HQ: cards without printed Votes gain +1 Vote).</li>
+    </ul>
+    <p><em>First game kit: Champion, Gilded Wall, Royal Bank. Starter Tactic: School of the Stones.</em></p>
+  </div></details>
+
+  <details class="fac clans"><summary>The Clans</summary><div class="body">
+    <p class="style">Mobility, momentum, overwhelming force. Exiles sailing home.</p>
+    <h3>Tactics</h3>
+    <ul>
+      <li><strong>School of the Storms</strong> — place the Clash Markers this Round; gain Lore for most Supporters, Influence for most faction cards.</li>
+      <li><strong>Sea Lanes</strong> (3 uses) — Heir/Captain/War Machine gains Flank until end of Round.</li>
+      <li><strong>River Runners</strong> — steal an Occupied Kingdom Card.</li>
+      <li><strong>Salt Toughness</strong> — move Active/discarded cards to hand.</li>
+    </ul>
+    <h3>Kingdom's Favour — Prophet of the Waves</h3>
+    <p>Move your Herald to a Location in the current Region; move up to two Supporters from other Regions here.</p>
+    <h3>Site of Power highlights</h3>
+    <ul>
+      <li><strong>Raid &amp; Raze</strong> · <strong>New Havens Harbour</strong> (HQ: your cards gain Resilient; recover Supporters) · <strong>Wandering Embassy</strong> (HQ: Traders gain Flank).</li>
+    </ul>
+    <p><em>First game kit: Champion, Raid &amp; Raze, New Havens Harbour. Starter Tactic: Salt Toughness.</em></p>
+  </div></details>
+
+  <details class="fac gathering"><summary>The Gathering</summary><div class="body">
+    <p class="style">Card manipulation, subversion, creeping accrual of power. The cult that grows each night.</p>
+    <h3>Tactics</h3>
+    <ul>
+      <li><strong>Moonlit Foragers</strong> — acquire a discarded Kingdom Card.</li>
+      <li><strong>Out Beyond the Lights</strong> — swap two of your Active cards.</li>
+      <li><strong>School of the Stars</strong> — replace two Supporters with a Lost Pile card.</li>
+      <li><strong>Ritual Sacrifice</strong> — gain Lore moving Active/discarded cards to the Lost Pile; recover one discard.</li>
+    </ul>
+    <h3>Kingdom's Favour — Herald of the Moon</h3>
+    <p>Move one of your Active cards in your Herald's Region to your hand.</p>
+    <h3>Site of Power highlights</h3>
+    <ul>
+      <li><strong>Ritual of the Eye</strong> (lowest Strength above 0 wins the Clash — the Champion-killer) · <strong>The Door in the Night</strong> (HQ: grant Ambush, even from your Discard Pile).</li>
+    </ul>
+    <p><em>First game kit: Champion, Ritual of the Eye, Moonshine Cove. Starter Tactic: Out Beyond the Lights.</em></p>
+  </div></details>
+
+  <details class="fac uprising"><summary>The Uprising</summary><div class="body">
+    <p class="style">Scheming, feints, eliminating rival cards. Generations of grief bared like teeth.</p>
+    <h3>Tactics</h3>
+    <ul>
+      <li><strong>False Orders</strong> — swap two face-down faction cards, once per opponent.</li>
+      <li><strong>Night Raids</strong> — opponents discard one card per Kingdom Card you Occupy.</li>
+      <li><strong>School of the Streets</strong> — your Heir gains Deadly; your Deadly eliminations grant +1 Influence and +1 Lore.</li>
+      <li><strong>Safehouses</strong> (3 uses) — a faction card gains Retreat.</li>
+    </ul>
+    <h3>Kingdom's Favour — Spy Network</h3>
+    <p>Look at all face-down cards in a Region; you may swap one of your face-down cards in any Region with an Occupying card or a card from hand.</p>
+    <h3>Site of Power highlights</h3>
+    <ul>
+      <li><strong>Black Powder Ploy</strong> · <strong>Moonshine Cove</strong> (HQ: extra Kingdom Card space) · <strong>The Syndicate</strong> (HQ: Votes from acquiring Kingdom Cards).</li>
+    </ul>
+    <p><em>First game kit: Champion, Black Powder Ploy, The Door in the Night. Starter Tactic: School of the Streets.</em></p>
+  </div></details>
+</section>
+
+<!-- ============ CARD LIBRARY ============ -->
+<section class="page" id="page-cards">
+  <h2>Card Library</h2>
+  <p style="color:var(--muted);font-size:0.85rem">All base-game cards with official images. Tap to enlarge. Images need internet; text always works.</p>
+  <div class="subnav" id="cardsets">
+    <button class="active" data-set="kingdom">Kingdom</button>
+    <button data-set="faction">Faction cards</button>
+    <button data-set="tactic">Tactics</button>
+    <button data-set="favour">Favour</button>
+    <button data-set="location">Locations</button>
+    <button data-set="council">Councils</button>
+  </div>
+  <div class="subnav" id="cardfacs" style="display:none">
+    <button class="active" data-fac="">All</button>
+    <button data-fac="Nobility">Nobility</button>
+    <button data-fac="Clans">Clans</button>
+    <button data-fac="Gathering">Gathering</button>
+    <button data-fac="Uprising">Uprising</button>
+  </div>
+  <div class="cardcount" id="cardcount"></div>
+  <div class="cardgrid" id="cardgrid"></div>
+</section>
+
+<!-- ============ SETUP ============ -->
+<section class="page" id="page-setup">
+  <h2>Setup</h2>
+  <div class="subnav">
+    <button class="active" data-setup="standard">Standard</button>
+    <button data-setup="teaching">First-game teaching</button>
+    <button data-setup="advanced">Advanced</button>
+  </div>
+
+  <div id="setup-standard">
+    <p>Choose game length first: <strong>Standard 5 Rounds</strong> (recommended), Short 4, Extended 6.</p>
+    <ul class="check">
+      <li><input type="checkbox"><span>Kingdom Board central, Councils Tile above. Season Marker on Spring-1, Round Marker on 1.</span></li>
+      <li><input type="checkbox"><span>Shuffle 51 Kingdom Cards → deck on the Great Road's left space. Fill three spaces face-up, flip the deck's top card (4 face-up).</span></li>
+      <li><input type="checkbox"><span>Reserve: all Influence and Lore tokens beside the board.</span></li>
+      <li><input type="checkbox"><span>Kingdom's Favour disc on the Harvest Field (III up).</span></li>
+      <li><input type="checkbox"><span>Clash Markers stacked (III bottom, I top) in their slot.</span></li>
+      <li><input type="checkbox"><span>Each player: faction, Player Board, Herald + 5 Supporters in their slots.</span></li>
+      <li><input type="checkbox"><span>Hand Size Marker top-left, starting size aligned to the arrow.</span></li>
+      <li><input type="checkbox"><span>Four Tactic tiles text-side up; follow printed SETUP text.</span></li>
+      <li><input type="checkbox"><span>Faction Markers in a pile; Site of Power tile beside your board.</span></li>
+      <li><input type="checkbox"><span>Pull the 5 Lore-cost cards (Advanced + HQ) from your deck onto your Site of Power.</span></li>
+      <li><input type="checkbox"><span>Set your Heir aside, shuffle the rest as your Deck. Heir to hand, draw to 6.</span></li>
+      <li><input type="checkbox"><span>Order Track: oldest first (or random). First player takes the Active Player Marker.</span></li>
+    </ul>
+  </div>
+
+  <div id="setup-teaching" style="display:none">
+    <p>From the official Teaching Guide — use together for a guided first Round. The teacher goes <strong>first</strong> on the Order Track.</p>
+    <ul class="check">
+      <li><input type="checkbox"><span>Play a <strong>Short Game (4 Rounds)</strong>.</span></li>
+      <li><input type="checkbox"><span>Build the 30-card teaching Kingdom Deck (Teaching Guide p.3); rest back in the box.</span></li>
+      <li><input type="checkbox"><span>Stack the 8 scripted cards on top, "Remote Bothies" uppermost: Ruined Citadel, Smugglers' Pass, Old King's Helm, Splendid Guard, Mustering Banner, Unearthed Iron Gear, The Sword That Slept, Remote Bothies.</span></li>
+      <li><input type="checkbox"><span>Sites of Power: 3 cards each — Champion plus: Nobility Gilded Wall + Royal Bank · Clans Raid &amp; Raze + New Havens Harbour · Uprising Black Powder Ploy + The Door in the Night · Gathering Ritual of the Eye + Moonshine Cove.</span></li>
+      <li><input type="checkbox"><span>Tactics: all Exhausted, or one starter Tactic each — Nobility School of the Stones · Clans Salt Toughness · Gathering Out Beyond the Lights · Uprising School of the Streets.</span></li>
+      <li><input type="checkbox"><span>Teacher first on the Order Track.</span></li>
+      <li><input type="checkbox"><span>Round 1: Clash order I Highlands, II Plateau, III Lowlands. Teach stealing Kingdom Cards in Round 2.</span></li>
+      <li><input type="checkbox"><span>After Round 1: group reflection — continue or restart.</span></li>
+    </ul>
+  </div>
+
+  <div id="setup-advanced" style="display:none">
+    <p>For experienced groups; any game length.</p>
+    <ul class="check">
+      <li><input type="checkbox"><span>After board setup, deal each player 5 face-down Kingdom Cards (look at your own; don't show).</span></li>
+      <li><input type="checkbox"><span>After drawing hands, one Mulligan each: return non-starting-icon cards to the top of the deck, shuffle, redraw.</span></li>
+      <li><input type="checkbox"><span>Choose 1 of your 5 Kingdom Cards face-down onto your board with a hand card on top. Shuffle the rest into the Kingdom Deck.</span></li>
+      <li><input type="checkbox"><span>After turn order: reveal all — the Faction Card Occupies the Kingdom Card. Resolve bold text in turn order. Draw to Hand Size.</span></li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<!-- Search overlay -->
+<div id="searchoverlay">
+  <div class="bar">
+    <input id="searchinput" type="search" placeholder="Search rules, keywords, cards…" autocomplete="off">
+    <button class="closebtn" id="searchclose">&times;</button>
+  </div>
+  <div id="searchresults"></div>
+</div>
+
+<!-- Card modal -->
+<div id="cardmodal">
+  <button class="close" aria-label="Close">&times;</button>
+  <div class="inner">
+    <img id="cm-img" alt="">
+    <h3 id="cm-name"></h3>
+    <div class="txt" id="cm-text"></div>
+    <div class="flv" id="cm-flavor"></div>
+  </div>
+</div>
+
+<nav class="tabs">
+  <button class="active" data-page="play"><span class="ico">&#9654;&#65039;</span>Play</button>
+  <button data-page="rules"><span class="ico">&#128214;</span>Rules</button>
+  <button data-page="factions"><span class="ico">&#9876;&#65039;</span>Factions</button>
+  <button data-page="cards"><span class="ico">&#127183;</span>Cards</button>
+  <button data-page="setup"><span class="ico">&#9989;</span>Setup</button>
+</nav>
+
+<script src="cards-data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
