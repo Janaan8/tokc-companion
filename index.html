@@ -736,8 +736,8 @@
   <button data-page="setup"><span class="ico">q</span>Setup</button>
 </nav>
 
-<script src="cards-data.js?v=8"></script>
-<script src="app.js?v=8"></script>
+<script src="cards-data.js?v=9"></script>
+<script src="app.js?v=9"></script>
 <script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js');
@@ -775,13 +775,16 @@
       text.innerHTML = '<b>Install this app:</b> tap the Share button <span style="font-size:1.05em">&#x2191;&#xFE0E;</span> below, then choose <b>"Add to Home Screen"</b>.';
       bar.style.display = '';
     } else if (isAndroid) {
-      // Fallback: in-app browsers (WhatsApp etc.) and some Chrome states never fire
-      // beforeinstallprompt — show manual instructions instead.
+      // No install prompt (Firefox, in-app browsers, some Chrome states):
+      // every Android browser can still add the app via its own menu.
+      const isFirefox = /firefox|fxios/i.test(navigator.userAgent);
       setTimeout(() => {
         if (deferred || bar.style.display !== 'none') return;
-        text.innerHTML = '<b>Install this app:</b> open this page in <b>Chrome</b> (not inside WhatsApp), tap the <b>&#8942;</b> menu, then <b>"Add to Home screen"</b> / <b>"Install app"</b>.';
+        text.innerHTML = isFirefox
+          ? '<b>Install this app:</b> tap the <b>&#8942;</b> menu and choose <b>"Add to Home screen"</b> (or <b>"Install"</b>).'
+          : '<b>Install this app:</b> open the browser menu (<b>&#8942;</b>) and choose <b>"Add to Home screen"</b> or <b>"Install app"</b>. Opened from WhatsApp? First choose "Open in browser".';
         bar.style.display = '';
-      }, 2500);
+      }, 2000);
     }
 
     dismiss.addEventListener('click', () => {
