@@ -211,8 +211,7 @@ function safeStorageSet(key, value) {
   }
 }
 
-let stepIdx = parseInt(safeStorageGet('tokc-step') || '0', 10);
-if (isNaN(stepIdx) || stepIdx < 0 || stepIdx >= STEPS.length) stepIdx = 0;
+let stepIdx = 0; // always start a session at step 1 — every device opens fresh
 
 function renderStep() {
   const s = STEPS[stepIdx];
@@ -230,7 +229,6 @@ function renderStep() {
   document.getElementById('steppos').textContent = `Step ${stepIdx + 1} of ${STEPS.length}`;
   document.getElementById('prevstep').disabled = stepIdx === 0;
   document.getElementById('nextstep').textContent = stepIdx === STEPS.length - 1 ? 'New Round ↺' : 'Next →';
-  safeStorageSet('tokc-step', stepIdx);
 }
 document.getElementById('nextstep').addEventListener('click', () => {
   stepIdx = (stepIdx + 1) % STEPS.length;
