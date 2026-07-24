@@ -31,6 +31,19 @@
     --winter: #8fb3c9;
     --radius: 12px;
   }
+  @font-face {
+    font-family: 'OKCIcons';
+    src: url('assets/okc-icons.otf') format('opentype');
+    font-display: block;
+  }
+  .ic {
+    font-family: 'OKCIcons';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    display: inline-block;
+    vertical-align: -0.1em;
+  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { -webkit-text-size-adjust: 100%; }
   body {
@@ -48,7 +61,13 @@
     text-align: center;
     position: relative;
   }
-  header.top .crown { font-size: 1.5rem; display: block; line-height: 1; filter: drop-shadow(0 0 6px rgba(217,185,104,.45)); }
+  header.top .crown {
+    font-size: 1.7rem;
+    display: block;
+    line-height: 1;
+    color: var(--gold);
+    filter: drop-shadow(0 0 7px rgba(217,185,104,.5));
+  }
   header.top h1 {
     font-size: 1.05rem;
     letter-spacing: 0.18em;
@@ -94,7 +113,13 @@
     padding: 8px 2px 9px;
     cursor: pointer;
   }
-  nav.tabs button .ico { display: block; font-size: 1.2rem; margin-bottom: 1px; }
+  nav.tabs button .ico {
+    display: block;
+    font-family: 'OKCIcons';
+    font-size: 1.25rem;
+    margin-bottom: 2px;
+    line-height: 1.1;
+  }
   nav.tabs button.active { color: var(--gold); }
 
   main { max-width: 760px; margin: 0 auto; padding: 8px 14px 30px; }
@@ -347,7 +372,7 @@
 <body>
 
 <header class="top">
-  <span class="crown">&#128081;</span>
+  <span class="crown ic">h</span>
   <h1>The Old King's Crown</h1>
   <div class="rule"></div>
   <button id="searchbtn" aria-label="Search">&#128269;</button>
@@ -427,24 +452,26 @@
 
   <details id="ref-traits"><summary>Traits</summary><div class="body">
     <ul>
-      <li><strong>Invulnerable</strong> — immune to Elimination (Deadly or any other source).</li>
-      <li><strong>Resilient</strong> — when Eliminated, goes to your Discard Pile instead of the Lost Pile.</li>
-      <li><strong>Pathfinder</strong> — when used to Journey, goes to your Discard Pile instead of the Lost Pile.</li>
+      <li><span class="ic">I</span> <strong>Invulnerable</strong> — immune to Elimination (Deadly or any other source).</li>
+      <li><span class="ic">R</span> <strong>Resilient</strong> — when Eliminated, goes to your Discard Pile instead of the Lost Pile.</li>
+      <li><span class="ic">P</span> <strong>Pathfinder</strong> — when used to Journey, goes to your Discard Pile instead of the Lost Pile.</li>
     </ul>
+    <div class="note">These icons appear in the top-left corner of a card, under its Strength and Archetype.</div>
   </div></details>
 
   <details id="ref-basicdeck"><summary>Basic Deck (14 cards, identical per faction)</summary><div class="body">
     <div class="tablewrap"><table>
       <tr><th>Card</th><th>Str</th><th>Notes</th></tr>
-      <tr><td>Heir</td><td>10</td><td>Resilient. Rally (Self). Starts in hand — bounce it home every Round.</td></tr>
-      <tr><td>Captains</td><td>9–6</td><td>1 Vote, 1 Lore, Pathfinder. Great bids &amp; all-rounders; no defence vs Elimination.</td></tr>
-      <tr><td>War Machine</td><td>5</td><td>Invulnerable. Deploy (1) in Autumn — holds a Region into next Round.</td></tr>
-      <tr><td>Cavalry</td><td>5</td><td>Pathfinder. Flank — most mobile card; reveal in early Regions for options.</td></tr>
-      <tr><td>Agent</td><td>5</td><td>2 Votes. Deadly — but Eliminated by enemy Followers in the Clash.</td></tr>
-      <tr><td>Followers</td><td>4–1</td><td>Invulnerable, 1 Lore. Counter Agents; sometimes win as last card standing.</td></tr>
-      <tr><td>Ruse!</td><td>0</td><td>Invulnerable. Ambush <em>or</em> Retreat — scout a Clash, then reinforce or escape.</td></tr>
-      <tr><td>Trader</td><td>0</td><td>2 Votes, 2 Lore. Rally (Any 2) — card economy engine; fragile.</td></tr>
+      <tr><td><span class="ic">h</span> Heir</td><td>10</td><td><span class="ic">R</span> Resilient. Rally (Self). Starts in hand — bounce it home every Round.</td></tr>
+      <tr><td><span class="ic">c</span> Captains</td><td>9–6</td><td>1 <span class="ic">v</span>, 1 <span class="ic">p</span>, <span class="ic">P</span> Pathfinder. Great bids &amp; all-rounders; no defence vs Elimination.</td></tr>
+      <tr><td><span class="ic">w</span> War Machine</td><td>5</td><td><span class="ic">I</span> Invulnerable. Deploy (1) in Autumn — holds a Region into next Round.</td></tr>
+      <tr><td><span class="ic">m</span> Cavalry</td><td>5</td><td><span class="ic">P</span> Pathfinder. Flank — most mobile card; reveal in early Regions for options.</td></tr>
+      <tr><td><span class="ic">a</span> Agent</td><td>5</td><td>2 <span class="ic">v</span>. Deadly — but Eliminated by enemy Followers in the Clash.</td></tr>
+      <tr><td><span class="ic">f</span> Followers</td><td>4–1</td><td><span class="ic">I</span> Invulnerable, 1 <span class="ic">p</span>. Counter Agents; sometimes win as last card standing.</td></tr>
+      <tr><td><span class="ic">r</span> Ruse!</td><td>0</td><td><span class="ic">I</span> Invulnerable. Ambush <em>or</em> Retreat — scout a Clash, then reinforce or escape.</td></tr>
+      <tr><td><span class="ic">t</span> Trader</td><td>0</td><td>2 <span class="ic">v</span>, 2 <span class="ic">p</span>. Rally (Any 2) — card economy engine; fragile.</td></tr>
     </table></div>
+    <p style="color:var(--muted);font-size:0.8rem"><span class="ic">v</span> = Votes · <span class="ic">p</span> = Lore · <span class="ic">i</span> = Influence</p>
   </div></details>
 
   <details id="ref-locations"><summary>Map: Regions &amp; Location Rewards</summary><div class="body">
@@ -540,7 +567,7 @@
   <h2>Factions</h2>
   <p>All factions share the same 14-card Basic Deck. Their identity comes from four unique <strong>Tactics</strong>, five buyable <strong>Site of Power</strong> cards and a faction <strong>Kingdom's Favour</strong> Action. Full card texts &amp; images: Cards tab.</p>
 
-  <details class="fac nobility"><summary>The Nobility</summary><div class="body">
+  <details class="fac nobility"><summary><span class="ic">N</span> The Nobility</summary><div class="body">
     <p class="style">Defence, control, locking down what is theirs. The old order, stirring awake.</p>
     <h3>Tactics</h3>
     <ul>
@@ -558,7 +585,7 @@
     <p><em>First game kit: Champion, Gilded Wall, Royal Bank. Starter Tactic: School of the Stones.</em></p>
   </div></details>
 
-  <details class="fac clans"><summary>The Clans</summary><div class="body">
+  <details class="fac clans"><summary><span class="ic">C</span> The Clans</summary><div class="body">
     <p class="style">Mobility, momentum, overwhelming force. Exiles sailing home.</p>
     <h3>Tactics</h3>
     <ul>
@@ -576,7 +603,7 @@
     <p><em>First game kit: Champion, Raid &amp; Raze, New Havens Harbour. Starter Tactic: Salt Toughness.</em></p>
   </div></details>
 
-  <details class="fac gathering"><summary>The Gathering</summary><div class="body">
+  <details class="fac gathering"><summary><span class="ic">G</span> The Gathering</summary><div class="body">
     <p class="style">Card manipulation, subversion, creeping accrual of power. The cult that grows each night.</p>
     <h3>Tactics</h3>
     <ul>
@@ -594,7 +621,7 @@
     <p><em>First game kit: Champion, Ritual of the Eye, Moonshine Cove. Starter Tactic: Out Beyond the Lights.</em></p>
   </div></details>
 
-  <details class="fac uprising"><summary>The Uprising</summary><div class="body">
+  <details class="fac uprising"><summary><span class="ic">U</span> The Uprising</summary><div class="body">
     <p class="style">Scheming, feints, eliminating rival cards. Generations of grief bared like teeth.</p>
     <h3>Tactics</h3>
     <ul>
@@ -711,11 +738,11 @@
 </div>
 
 <nav class="tabs">
-  <button class="active" data-page="play"><span class="ico">&#9654;&#65039;</span>Play</button>
-  <button data-page="rules"><span class="ico">&#128214;</span>Rules</button>
-  <button data-page="factions"><span class="ico">&#9876;&#65039;</span>Factions</button>
-  <button data-page="cards"><span class="ico">&#127183;</span>Cards</button>
-  <button data-page="setup"><span class="ico">&#9989;</span>Setup</button>
+  <button class="active" data-page="play"><span class="ico">s</span>Play</button>
+  <button data-page="rules"><span class="ico">M</span>Rules</button>
+  <button data-page="factions"><span class="ico">f</span>Factions</button>
+  <button data-page="cards"><span class="ico">p</span>Cards</button>
+  <button data-page="setup"><span class="ico">q</span>Setup</button>
 </nav>
 
 <script src="cards-data.js"></script>
